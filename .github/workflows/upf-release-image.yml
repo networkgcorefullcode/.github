@@ -12,14 +12,6 @@ on:
       changed:
         required: true
         type: string
-      aether_registry:
-        description: "Aether Registry URL"
-        default: "registry.aetherproject.org"
-        type: string
-      aether_repository:
-        description: "Aether Repository"
-        default: "sdcore/"
-        type: string
       docker_registry:
         description: "Docker Registry URL"
         default: "docker.io"
@@ -72,15 +64,3 @@ jobs:
           registry: ${{ inputs.aether_registry }}
           username: ${{ secrets.AETHER_REGISTRY_USERNAME }}
           password: ${{ secrets.AETHER_REGISTRY_PASSWORD }}
-
-      - name: Build and Push to Aether Registry
-        env:
-          DOCKER_TAG: ${{ matrix.cpu == 'ivybridge' && format('rel-{0}-ivybridge', inputs.version) || format('rel-{0}', inputs.version) }}
-          DOCKER_REGISTRY: ${{ inputs.aether_registry }}/
-          DOCKER_REPOSITORY: ${{ inputs.aether_repository }}
-          CPU: ${{ matrix.cpu }}
-        run: |
-          docker pull ${DOCKER_REGISTRY}${DOCKER_REPOSITORY}upf-epc-bess:$DOCKER_TAG || true
-          docker pull ${DOCKER_REGISTRY}${DOCKER_REPOSITORY}upf-epc-pfcpiface:$DOCKER_TAG || true
-          CPU=$CPU make docker-build
-          make docker-push
