@@ -22,6 +22,6 @@ jobs:
 
       - uses: peterjgrainger/action-create-branch@v3.0.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_OMEC_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GH_5G_PAT }}
         with:
           branch: "rel-${{ inputs.version_branch }}"
